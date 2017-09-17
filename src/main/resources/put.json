@@ -1,0 +1,40 @@
+
+[
+  {
+    "id": 1,
+    "attributeValuesIds": [2],
+    "rangedAttributeValueId": 2
+  },
+  {
+    "id": 1,
+    "attributeValues": [
+      {
+        "id": 1,
+        "attribute": {
+          "id": 1,
+          "name": "Diagonal"
+        }
+      }
+    ],
+    "rangedAttributeValue": {
+      "id": 1,
+      "attribute": {
+        "id": 1,
+        "name": "Diagonal"
+      },
+      "min": 10.0,
+      "max": 20.0
+    }
+  },
+  {
+    "id": 1,
+    "attributeValues": [
+      {
+        "id": 2
+      }
+    ],
+    "rangedAttributeValue": {
+      "id": 2
+    }
+  }
+]
