@@ -1,3 +1,4 @@
+
 spring:
     application:
         name: eldoapplication
@@ -5,8 +6,12 @@ spring:
       generate-ddl: true
     datasource:
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.99.100:3306/eldo?characterEncoding=utf8&maxAllowedPacket=512000&rewriteBatchedStatements=true&verifyServerCertificate=false&useSSL=true
+        url: jdbc:mysql://localhost:3306/eldo?characterEncoding=utf8&maxAllowedPacket=512000&rewriteBatchedStatements=true&verifyServerCertificate=false&useSSL=true
         username: root
         password: 123456
 server:
     port: 9000
+logging:
+  level:
+    org.springframework.transaction: DEBUG
+    org.hibernate.tool.hbm2ddl.SchemaExport: DEBUG

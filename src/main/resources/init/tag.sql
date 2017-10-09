@@ -1,0 +1,1 @@
+INSERT INTO tag (id, active, name, category_id) VALUES (1, TRUE, "Супер таг", 1);

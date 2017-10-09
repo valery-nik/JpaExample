@@ -10,6 +10,7 @@ import java.util.Set;
 import static javax.persistence.FetchType.EAGER;
 
 @EqualsAndHashCode(exclude = {"rangedAttributeValue", "attributeValues"})
+@ToString(exclude={"rangedAttributeValue", "rangedAttributeValue", "tag"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +29,8 @@ public class FacetValue {
     @JsonManagedReference
     @OneToOne(mappedBy = "facetValue", cascade = CascadeType.ALL)
     private RangedAttributeValue rangedAttributeValue; // ranged AttributeValues
+
+    @ManyToOne
+    @JoinColumn(name="TAG_ID")
+    private Tag tag;
 }

@@ -1,19 +1,15 @@
 package ru.oz.mytutors.eldorado.repository.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.oz.mytutors.eldorado.model.AttributeValue;
 import ru.oz.mytutors.eldorado.model.FacetValue;
 import ru.oz.mytutors.eldorado.model.RangedAttributeValue;
-import ru.oz.mytutors.eldorado.repository.FacetValueRepository;
 import ru.oz.mytutors.eldorado.repository.FacetValueRepositoryCustom;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 public class FacetValueRepositoryImpl implements FacetValueRepositoryCustom {
@@ -23,29 +19,33 @@ public class FacetValueRepositoryImpl implements FacetValueRepositoryCustom {
 
     @Override
     @Transactional
-    public FacetValue updateAttributeValues(FacetValue facetValue, List<AttributeValue> attributeValues, RangedAttributeValue rangedAttributeValue) {
+    public FacetValue updateValues(FacetValue facetValue, List<Long> attributeValueIds, Long rangedAttributeValueId) {
 
         // delete old child objects
         RangedAttributeValue oldRanged = entityManager.find(RangedAttributeValue.class, facetValue.getRangedAttributeValue().getId());
-        entityManager.remove(oldRanged);
+        oldRanged.setFacetValue(null);
+        entityManager.persist(oldRanged);
+
 
         facetValue.getAttributeValues().forEach((av) -> {
             AttributeValue oldAv = entityManager.find(AttributeValue.class, av.getId());
-            entityManager.remove(oldAv);
+            oldAv.setFacetValue(null);
+            entityManager.persist(oldAv);
         });
 
-        // save new
-        rangedAttributeValue.setFacetValue(facetValue);
-        entityManager.persist(rangedAttributeValue);
+        // save new ranged
+        RangedAttributeValue newRanged = entityManager.find(RangedAttributeValue.class, rangedAttributeValueId);
+        newRanged.setFacetValue(facetValue);
+        entityManager.persist(newRanged);
 
-        attributeValues.forEach((av) -> {
-            av.setFacetValue(facetValue);
-            entityManager.persist(av);
+        // save new av
+        attributeValueIds.forEach((id) -> {
+            AttributeValue newAv = entityManager.find(AttributeValue.class, id);
+            newAv.setFacetValue(facetValue);
+            entityManager.persist(newAv);
         });
 
-        //
-//        facetValue.setRangedAttributeValue(rangedAttributeValue);
-
+        // entityManager.flush(); not working
         return entityManager.find(FacetValue.class, facetValue.getId());
     }
 
