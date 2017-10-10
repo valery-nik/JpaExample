@@ -8,23 +8,26 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import ru.oz.mytutors.eldorado.configs.JpaConfiguration;
+import ru.oz.mytutors.eldorado.configs.PersistenceContext;
 import ru.oz.mytutors.eldorado.model.*;
 import ru.oz.mytutors.eldorado.repository.*;
 import ru.oz.mytutors.eldorado.service.TagService;
 
-import javax.transaction.Transaction;
 import java.util.List;
 
 @Slf4j
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
-@Import(JpaConfiguration.class)
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class,
+        DataSourceTransactionManagerAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class}
+)
+@Import(PersistenceContext.class)
 @SpringBootApplication
 public class EldoApplication {
 
@@ -58,16 +61,16 @@ public class EldoApplication {
         return args -> {
             //Tag tag = tagRepository.findOne(1L);
 
-            TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
-            try {
-                List<FacetValue> facetValues =  tagService.getFacetValuesByTagId(1L); // tag.getFacetValues();
-                facetValues.forEach(System.out :: println);
-
-                transactionManager.commit(txStatus);
-            } catch (Exception ex) {
-                transactionManager.rollback(txStatus);
-                throw new RuntimeException(ex);
-            }
+//            TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+//            try {
+//                List<FacetValue> facetValues =  tagService.getFacetValuesByTagId(1L); // tag.getFacetValues();
+//                facetValues.forEach(System.out :: println);
+//
+//                transactionManager.commit(txStatus);
+//            } catch (Exception ex) {
+//                transactionManager.rollback(txStatus);
+//                throw new RuntimeException(ex);
+//            }
 
         };
     }

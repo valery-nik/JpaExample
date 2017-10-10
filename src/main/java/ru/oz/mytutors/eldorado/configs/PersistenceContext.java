@@ -1,9 +1,16 @@
 package ru.oz.mytutors.eldorado.configs;
 
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,20 +25,24 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = {
+        "ru.oz.mytutors.eldorado.repository"
+})
 @Configuration
-public class JpaConfiguration {
+public class PersistenceContext {
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         return DataSourceBuilder
                 .create()
+                .driverClassName("com.mysql.jdbc.Driver")
+                .url("jdbc:mysql://localhost:3306/eldo?useSSL=true")
                 .username("root")
                 .password("123456")
-                .url("jdbc:mysql://localhost:3306/eldo?useSSL=true")
                 .build();
     }
 
-    @Bean
+    //@Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/schema.sql"));
@@ -49,23 +60,40 @@ public class JpaConfiguration {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "ru.oz.mytutors.eldorado.model" });
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource());
+        emf.setPackagesToScan("ru.oz.mytutors.eldorado.model");
+        emf.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(additionalProperties());
+        emf.setJpaVendorAdapter(vendorAdapter);
+        emf.setJpaProperties(additionalProperties());
 
-        return em;
+        return emf;
     }
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("spring.jpa.database", "MYSQL");
-        properties.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop");
-        properties.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-        properties.setProperty("spring.jpa.hibernate.naming-strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+//        properties.setProperty("spring.jpa.database", "MYSQL");
+//        properties.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+//        properties.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+//        properties.setProperty("spring.jpa.hibernate.naming-strategy", "org.hibernate.cfg.DefaultNamingStrategy");
+
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.physical_naming_strategy", "ru.oz.mytutors.PhysicalNamingStrategyImpl");
+        properties.setProperty("hibernate.show_sql", "true");
+
+
+//        properties.setProperty("spring.jpa.hibernate.naming.strategy", "org.hibernate.cfg.Hibernate5NamingStrategy");
+//        properties.setProperty("spring.jpa.hibernate.naming.strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+
+//                env.getProperty("mysql-hibernate.hbm2ddl.auto"));
+//        properties.setProperty("hibernate.dialect",
+//                env.getProperty("mysql-hibernate.dialect"));
+//        properties.setProperty("hibernate.show_sql",
+//                env.getProperty("mysql-hibernate.show_sql") != null
+//                        ? env.getProperty("mysql-hibernate.show_sql") : "false");
         return properties;
     }
 
