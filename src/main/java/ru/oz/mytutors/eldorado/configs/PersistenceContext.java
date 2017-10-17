@@ -42,15 +42,17 @@ public class PersistenceContext {
                 .build();
     }
 
-    //@Bean
+    @Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/schema.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/init/facet.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/tag.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/facet-value.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/attribute.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/attribute-value.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/init/ranged-attribute-values.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/init/value_to_facet-value.sql"));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource());
@@ -74,12 +76,12 @@ public class PersistenceContext {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-//        properties.setProperty("spring.jpa.database", "MYSQL");
+//        pro  perties.setProperty("spring.jpa.database", "MYSQL");
 //        properties.setProperty("spring.jpa.hibernate.ddl-auto", "create");
 //        properties.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 //        properties.setProperty("spring.jpa.hibernate.naming-strategy", "org.hibernate.cfg.DefaultNamingStrategy");
 
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.hbm2ddl.auto", "none");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         properties.setProperty("hibernate.physical_naming_strategy", "ru.oz.mytutors.PhysicalNamingStrategyImpl");
         properties.setProperty("hibernate.show_sql", "true");

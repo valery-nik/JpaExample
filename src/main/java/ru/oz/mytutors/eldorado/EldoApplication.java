@@ -59,18 +59,18 @@ public class EldoApplication {
     @Bean
     CommandLineRunner test() {
         return args -> {
-            //Tag tag = tagRepository.findOne(1L);
+            Tag tag = tagRepository.findOne(1L);
 
-//            TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
-//            try {
-//                List<FacetValue> facetValues =  tagService.getFacetValuesByTagId(1L); // tag.getFacetValues();
-//                facetValues.forEach(System.out :: println);
-//
-//                transactionManager.commit(txStatus);
-//            } catch (Exception ex) {
-//                transactionManager.rollback(txStatus);
-//                throw new RuntimeException(ex);
-//            }
+            TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+            try {
+                List<FacetValue> facetValues =  tagService.getFacetValuesByTagId(1L); // tag.getFacetValues();
+                facetValues.forEach(System.out :: println);
+
+                transactionManager.commit(txStatus);
+            } catch (Exception ex) {
+                transactionManager.rollback(txStatus);
+                throw new RuntimeException(ex);
+            }
 
         };
     }

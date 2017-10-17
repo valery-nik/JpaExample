@@ -13,10 +13,12 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
         return new Identifier(addUnderscores(name.getText()), name.isQuoted());
     }
+
     @Override
     public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment context) {
         return new Identifier(addUnderscores(name.getText()), name.isQuoted());
     }
+
     protected static String addUnderscores(String name) {
         final StringBuilder buf = new StringBuilder(name.replace('.', '_'));
         for (int i = 1; i < buf.length() - 1; i++) {
@@ -26,6 +28,6 @@ public class PhysicalNamingStrategyImpl extends PhysicalNamingStrategyStandardIm
                 buf.insert(i++, '_');
             }
         }
-        return buf.toString().toLowerCase(Locale.ROOT);
+        return buf.toString().toUpperCase(Locale.ROOT);
     }
 }

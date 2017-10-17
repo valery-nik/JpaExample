@@ -2,11 +2,11 @@
 spring:
     application:
         name: eldoapplication
-#    jpa:
-#      generate-ddl: true
-#      hibernate:
-#        naming:
-#          strategy: org.hibernate.cfg.DefaultNamingStrategy
+    jpa:
+      generate-ddl: true
+      hibernate:
+        naming:
+          strategy: ru.oz.mytutors.PhysicalNamingStrategyImpl
 #    datasource:
 #        driverClassName: com.mysql.jdbc.Driver
 #        url: jdbc:mysql://localhost:3306/eldo?characterEncoding=utf8&maxAllowedPacket=512000&rewriteBatchedStatements=true&verifyServerCertificate=false&useSSL=true

@@ -1,5 +1,12 @@
 USE eldo;
 
+DROP TABLE IF EXISTS facet;
+CREATE TABLE facet
+(
+    id   BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255)
+);
+
 DROP TABLE IF EXISTS attribute;
 CREATE TABLE attribute
 (
@@ -20,7 +27,18 @@ DROP TABLE IF EXISTS facet_value;
 CREATE TABLE facet_value
 (
     id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    tag_id BIGINT(20)
+    code VARCHAR(255),
+    name VARCHAR(255),
+    tag_id BIGINT(20),
+    facet_id BIGINT(20)
+);
+
+DROP TABLE IF EXISTS value_to_facet_value;
+CREATE TABLE value_to_facet_value
+(
+    ID BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    FACET_VALUE_ID BIGINT(20) NOT NULL,
+    VALUE VARCHAR(1000) NOT NULL
 );
 
 DROP TABLE IF EXISTS ranged_attribute_value;
