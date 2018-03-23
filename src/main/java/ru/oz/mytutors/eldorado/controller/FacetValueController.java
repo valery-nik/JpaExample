@@ -13,6 +13,7 @@ import ru.oz.mytutors.eldorado.repository.AttributeValueRepository;
 import ru.oz.mytutors.eldorado.repository.FacetValueRepository;
 import ru.oz.mytutors.eldorado.repository.RangedAttributeValueRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -44,9 +45,7 @@ public class FacetValueController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        List<AttributeValue> attributeValues = attributeValueRepository.findAll(dto.getAttributeValuesIds());
-        RangedAttributeValue rangedAttributeValue = rangedAttributeValueRepository.findOne(dto.getRangedAttributeValueId());
-        facetValueRepository.updateAttributeValues(currentFV, attributeValues, rangedAttributeValue);
+        facetValueRepository.updateValues(currentFV, new ArrayList<>(dto.getAttributeValuesIds()), dto.getRangedAttributeValueId());
 
         return new ResponseEntity(currentFV, HttpStatus.OK);
     }

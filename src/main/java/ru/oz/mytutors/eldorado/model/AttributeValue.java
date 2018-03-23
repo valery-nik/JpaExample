@@ -1,13 +1,11 @@
 package ru.oz.mytutors.eldorado.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@ToString(exclude= {"facetValues", "facetValue"})
 @Data
 @NoArgsConstructor
 @Entity
@@ -25,4 +23,6 @@ public class AttributeValue {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Attribute attribute;
+
+    private String value;
 }

@@ -15,6 +15,7 @@ import java.util.Set;
 public class FacetValueDto {
 
     private Long id;
+    private Long facetId;
     private Set<Long> attributeValuesIds = new HashSet<>(); // only simple AttributeValues
     private Long rangedAttributeValueId; // ranged AttributeValues
 

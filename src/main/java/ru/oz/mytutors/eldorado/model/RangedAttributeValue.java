@@ -24,10 +24,10 @@ public class RangedAttributeValue {
     private Long id;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private FacetValue facetValue;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Attribute attribute;
 
     @JsonProperty("min")
