@@ -1,15 +1,14 @@
-package ru.oz.mytutors.predicates;
+package ru.oz.mytutors.matorin.predicates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import static ru.oz.mytutors.predicates.EmployeePredicates.filterEmployees;
-import static ru.oz.mytutors.predicates.EmployeePredicates.isAdultFemale;
-import static ru.oz.mytutors.predicates.EmployeePredicates.isAgeMoreThan;
+import static ru.oz.mytutors.matorin.predicates.EmployeePredicates.filterEmployees;
+import static ru.oz.mytutors.matorin.predicates.EmployeePredicates.isAdultFemale;
+import static ru.oz.mytutors.matorin.predicates.EmployeePredicates.isAgeMoreThan;
 
 /**
  * Created by Igor Ozol
@@ -35,12 +34,14 @@ public class PredicatesApplication {
         employees.addAll(Arrays.asList(new Employee[]{e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11}));
 //        employees.stream().forEach(System.out::println);
 
+        // Композиция предикатов
         System.out.println("Взрослые женщины старше 35:");
-        filterEmployees(employees, isAgeMoreThan(35).and(isAdultFemale())).stream()
-            .forEach(System.out::println);
+        filterEmployees(employees, isAgeMoreThan(35).and(isAdultFemale()))
+                .stream()
+                .forEach(System.out::println);
 
 
-        // Перенос приедиката в скоуп метода, что бы не засорять класс локальным фильтром
+        // Перенос приедиката в скоуп текущего метода, что бы не засорять класс PredicatesApplication локальным фильтром
         System.out.println(" Все сотрудники с именем Alex:");
         Function<String, Predicate<Employee>> withName =
                 name ->  (employee) -> name.equalsIgnoreCase(employee.getFirstName());

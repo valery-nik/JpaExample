@@ -1,7 +1,5 @@
-package ru.oz.mytutors;
+package ru.oz.mytutors.matorin.curring;
 
-import java.util.Comparator;
-import java.util.Optional;
 import java.util.Random;
 import java.util.function.*;
 

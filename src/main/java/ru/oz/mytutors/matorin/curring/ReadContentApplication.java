@@ -1,4 +1,4 @@
-package ru.oz.mytutors;
+package ru.oz.mytutors.matorin.curring;
 
 import io.vavr.CheckedFunction1;
 import io.vavr.control.Try;

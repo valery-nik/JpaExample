@@ -1,4 +1,4 @@
-package ru.oz.mytutors.predicates;
+package ru.oz.mytutors.matorin.predicates;
 
 
 import lombok.AllArgsConstructor;

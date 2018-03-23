@@ -1,4 +1,4 @@
-package ru.oz.mytutors.predicates;
+package ru.oz.mytutors.matorin.predicates;
 
 import java.util.List;
 import java.util.function.Predicate;
