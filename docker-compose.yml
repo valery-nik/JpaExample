@@ -1,0 +1,40 @@
+# Пример связывания контейнеров
+version: '2' # версия формата compose файла
+
+services:
+  mysql_server:
+    build: mysql/ # собрать образ из Docerfile по пути ./mysql
+    image: iozol/mysql:1.0.0 # задаем репозиторий, имя и тег образа
+    container_name: sem_mysql_server
+    expose:
+      - "3306" # открыть порт для контейнеров соседей
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456  
+
+  alpine:
+    image: alpine:3.5 # запустить контейнер на основе готового образа alpine:3.5
+    container_name: sem_alpine
+    expose:
+      - "3306"
+    stdin_open: true # оставляет STDIN открытым (--interactive)
+    tty: true # запустить tty терминая на контейнере (--tty)
+    entrypoint: /bin/sh # запускаемая служба/команда/инструкция. Статическая, т.к. переопределить потом её нельзя
+
+  searchservice:
+    image: alpine:3.5
+    links: # связывает контейнер searchservice c перечисленными. Внутри контейнера будет настроен докерный ДНС,
+           # который по имени сервисов будет возвращать ip. Раньше ещё так же создавалист и перементыые + записи в 
+           # файле /etc/hosts 
+      # - alpine:sem_alpine # имя_сервиса:имя_контейнера - раньше это определяло формат создаваемых переменных окружения
+      # - mysql_server:sem_mysql_server
+      - alpine # имя_сервисы:имя_контейнера - раньше это определяло формат создаваемых переменных окружения
+      - mysql_server
+    container_name: searchservice
+    environment: # задать переменные окружения внутри запущенного контейнера, см запуск env
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: sem
+      MYSQL_USER: sem_user  
+      MYSQL_PASSWORD: sem123
+    stdin_open: true
+    tty: true 
+    entrypoint: /bin/sh 
